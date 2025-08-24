@@ -1550,38 +1550,7 @@ document.addEventListener('DOMContentLoaded', function() {
     animate();
 });
     </script>
-    <script>
-// Contact form submission (AJAX, no page reload)
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('contact-form');
-    const formMessage = document.getElementById('form-message');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            formMessage.textContent = '';
-            formMessage.style.color = '#6366f1';
 
-            // Collect form data
-            const formData = new FormData(form);
 
-            // Send via AJAX (fetch)
-            fetch('send_mail.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(result => {
-                formMessage.textContent = result;
-                formMessage.style.color = '#10b981'; // green
-                form.reset();
-            })
-            .catch(error => {
-                formMessage.textContent = 'Failed to send message. Please try again later.';
-                formMessage.style.color = '#ef4444'; // red
-            });
-        });
-    }
-});
-    </script>
 </body>
 </html>
