@@ -1,53 +1,3 @@
-<?php
-// This is the main HTML structure for the portfolio website
-// It includes the navigation, hero section, about section, skills section, projects section, certificates section, and contact form.
-
-// The code uses Tailwind CSS for styling and includes various animations and 3D effects using CSS and JavaScript libraries like Three.js and Typed.js. 
-// The website is designed to be responsive and visually appealing, with a focus on showcasing the developer's skills and projects.
-// Database configuration
-    $servername = "localhost";
-    $username = "root"; // Replace with your MySQL username
-    $password = ""; // Replace with your MySQL password
-    $dbname = "portfolio_db";
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-// Create table if not exists
-$sql = "CREATE TABLE IF NOT EXISTS contacts (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    subject VARCHAR(100) NOT NULL,
-    message TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)";
-if (!$conn->query($sql)) {
-    die("Error creating table: " . $conn->error);
-}
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get and sanitize form data
-    $name = $conn->real_escape_string($_POST['name']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $subject = $conn->real_escape_string($_POST['subject']);
-    $message = $conn->real_escape_string($_POST['message']);
-
-    // Insert data
-    $sql = "INSERT INTO contacts (name, email, subject, message) 
-            VALUES ('$name', '$email', '$subject', '$message')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Message sent successfully!');</script>";
-    } else {
-        echo "<script>alert('Error: " . $sql . "<br>" . $conn->error . "');</script>";
-    }
-}
-$conn->close();
-
-
-?>
 
 
 
@@ -1358,4 +1308,5 @@ $conn->close();
 
 </body>
 </html>
+
 
