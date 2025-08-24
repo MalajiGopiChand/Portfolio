@@ -1,8 +1,8 @@
 <?php
-// Database configuration
+// Optional: Database connection (only if you plan to use it elsewhere)
 $servername = "localhost";
-$username = "root";
-$password = "";
+$username = "root";      // Replace with your MySQL username
+$password = "";          // Replace with your MySQL password
 $dbname = "portfolio_db";
 
 // Create connection
@@ -13,38 +13,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Create table if not exists
-$createTable = "CREATE TABLE IF NOT EXISTS contacts (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    subject VARCHAR(200) NOT NULL,
-    message TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)";
+// You can remove all form-handling code here, as submission is disabled
 
-if (!$conn->query($createTable)) {
-    die("Error creating table: " . $conn->error);
-}
-
-// Process form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get and sanitize form data
-    $name = $conn->real_escape_string($_POST['name']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $subject = $conn->real_escape_string($_POST['subject']);
-    $message = $conn->real_escape_string($_POST['message']);
-
-    // Insert data
-    $sql = "INSERT INTO contacts (name, email, subject, message) 
-            VALUES ('$name', '$email', '$subject', '$message')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Message sent successfully!";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-}
-
+// Close connection
 $conn->close();
 ?>
