@@ -22,26 +22,23 @@ $sql = "CREATE TABLE IF NOT EXISTS contacts (
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
-
 if (!$conn->query($sql)) {
     die("Error creating table: " . $conn->error);
 }
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Check if all fields are set and not empty
+    // Validate all fields are filled
     if (!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['subject']) && !empty($_POST['message'])) {
-
-        // Sanitize form data to prevent SQL injection
+        // Sanitize form data
         $name = $conn->real_escape_string($_POST['name']);
         $email = $conn->real_escape_string($_POST['email']);
         $subject = $conn->real_escape_string($_POST['subject']);
         $message = $conn->real_escape_string($_POST['message']);
 
-        // Insert data into the database
+        // Insert data
         $insert_sql = "INSERT INTO contacts (name, email, subject, message) 
                        VALUES ('$name', '$email', '$subject', '$message')";
-
         if ($conn->query($insert_sql) === TRUE) {
             echo "<script>alert('Message sent successfully!');</script>";
         } else {
@@ -55,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Close connection
 $conn->close();
 ?>
-
 
 
 
@@ -1365,6 +1361,7 @@ $conn->close();
 
 </body>
 </html>
+
 
 
 
