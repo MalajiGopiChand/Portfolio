@@ -1,5 +1,4 @@
 <?php
-
 // Simple contact form handler for AJAX POST
 
 // Set response header
@@ -19,9 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Optionally, save to database (already handled in index.php if you want)
-    // Or send an email (requires mail server setup)
-    // Example: just return success for now
+    // ✅ At this point, you can either:
+    // 1. Save to database (requires DB connection here)
+    // 2. Or send an email using PHP mail()
+    // 3. Or just return success (default)
 
     echo "Thank you, $name! Your message has been sent.";
     exit;
@@ -29,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "Invalid request.";
     exit;
 }
-$conn->close();
 
-
+// ❌ Removed $conn->close() because no DB connection is opened here
 ?>
