@@ -1281,32 +1281,62 @@ $conn->close();
     <a href="#home" id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:bg-secondary">
         <i class="fas fa-arrow-up"></i>
     </a>
+<!-- JavaScript -->
+<script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-    <!-- JavaScript -->
-    <script>
-          const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuButton) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
 
-  mobileMenuButton.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-  });
-        
-        // Back to top button
-        const backToTopButton = document.getElementById('back-to-top');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.remove('opacity-0', 'invisible');
-                backToTopButton.classList.add('opacity-100', 'visible');
-            } else {
-                backToTopButton.classList.remove('opacity-100', 'visible');
-                backToTopButton.classList.add('opacity-0', 'invisible');
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+
+                // Close mobile menu if open
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
             }
         });
-        
-        // Typed.js initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            const typed = new Typed('#typed', {
+    });
+
+    // Animate elements on scroll
+    const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.animate-fadeIn');
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (elementPosition < windowHeight - 100) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    };
+
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', animateOnScroll);
+
+    // Typed.js initialization (if needed)
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof Typed !== 'undefined') {
+            new Typed('#typed', {
                 strings: [
                     "Full Stack Developer",
                     "C/C++ Programmer",
@@ -1321,236 +1351,11 @@ $conn->close();
                 cursorChar: '|',
                 smartBackspace: true
             });
-        });
-        
-        // Three.js Background
-        document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('threejs-container');
-            
-            // Only initialize Three.js if container exists
-            if (container) {
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                container.appendChild(renderer.domElement);
-                
-                // Create floating cubes
-                const cubes = [];
-                const geometry = new THREE.BoxGeometry(1, 1, 1);
-                
-                for (let i = 0; i < 15; i++) {
-                    const material = new THREE.MeshBasicMaterial({ 
-                        color: Math.random() * 0xffffff,
-                        transparent: true,
-                        opacity: 0.2,
-                        wireframe: true
-                    });
-                    
-                    const cube = new THREE.Mesh(geometry, material);
-                    
-                    // Random position
-                    cube.position.x = Math.random() * 20 - 10;
-                    cube.position.y = Math.random() * 20 - 10;
-                    cube.position.z = Math.random() * 20 - 10;
-                    
-                    // Random rotation
-                    cube.rotation.x = Math.random() * Math.PI;
-                    cube.rotation.y = Math.random() * Math.PI;
-                    
-                    // Random size
-                    const scale = Math.random() * 0.5 + 0.5;
-                    cube.scale.set(scale, scale, scale);
-                    
-                    // Store original positions for floating animation
-                    cube.userData = {
-                        originalY: cube.position.y,
-                        speed: Math.random() * 0.02 + 0.01,
-                        rotationSpeedX: Math.random() * 0.01,
-                        rotationSpeedY: Math.random() * 0.01
-                    };
-                    
-                    scene.add(cube);
-                    cubes.push(cube);
-                }
-                
-                camera.position.z = 5;
-                
-                // Handle window resize
-                window.addEventListener('resize', () => {
-                    camera.aspect = window.innerWidth / window.innerHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(window.innerWidth, window.innerHeight);
-                });
-                
-                // Animation loop
-                function animate() {
-                    requestAnimationFrame(animate);
-                    
-                    // Animate cubes
-                    cubes.forEach(cube => {
-                        // Floating animation
-                        cube.position.y = cube.userData.originalY + Math.sin(Date.now() * cube.userData.speed) * 2;
-                        
-                        // Rotation
-                        cube.rotation.x += cube.userData.rotationSpeedX;
-                        cube.rotation.y += cube.userData.rotationSpeedY;
-                    });
-                    
-                    renderer.render(scene, camera);
-                }
-                
-                animate();
-            }
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                }
-            });
-        });
-        
-        // Animate elements when they come into view
-        const animateOnScroll = () => {
-            const elements = document.querySelectorAll('.animate-fadeIn');
-            
-            elements.forEach(element => {
-                const elementPosition = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementPosition < windowHeight - 100) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }
-            });
-        };
-        
-        window.addEventListener('scroll', animateOnScroll);
-        window.addEventListener('load', animateOnScroll);
-    </script>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const canvas = document.getElementById('network-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    const config = {
-        nodeCount: 80,
-        maxDistance: 160,
-        nodeRadius: 2.5,
-        lineWidth: 0.8,
-        mouseRepulsion: 100
-    };
-
-    const nodes = [];
-    const mouse = {
-        x: 0,
-        y: 0
-    };
-
-    for (let i = 0; i < config.nodeCount; i++) {
-        nodes.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: Math.random() * 2 - 1,
-            vy: Math.random() * 2 - 1
-        });
-    }
-
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        ctx.beginPath();
-        for (let i = 0; i < nodes.length; i++) {
-            const node = nodes[i];
-            ctx.moveTo(node.x, node.y);
-            ctx.arc(node.x, node.y, config.nodeRadius, 0, Math.PI * 2);
-        }
-        ctx.fillStyle = 'rgba(99, 102, 241, 0.8)';
-        ctx.fill();
-
-        for (let i = 0; i < nodes.length; i++) {
-            for (let j = i + 1; j < nodes.length; j++) {
-                const nodeA = nodes[i];
-                const nodeB = nodes[j];
-                const dx = nodeB.x - nodeA.x;
-                const dy = nodeB.y - nodeA.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < config.maxDistance) {
-                    ctx.beginPath();
-                    ctx.moveTo(nodeA.x, nodeA.y);
-                    ctx.lineTo(nodeB.x, nodeB.y);
-                    ctx.lineWidth = config.lineWidth;
-                    ctx.strokeStyle = `rgba(99, 102, 241, ${1 - distance / config.maxDistance})`;
-                    ctx.stroke();
-                }
-            }
-        }
-    }
-
-    function update() {
-        for (let i = 0; i < nodes.length; i++) {
-            const node = nodes[i];
-            node.x += node.vx;
-            node.y += node.vy;
-
-            if (node.x < 0 || node.x > canvas.width) {
-                node.vx *= -1;
-            }
-            if (node.y < 0 || node.y > canvas.height) {
-                node.vy *= -1;
-            }
-        }
-    }
-
-    function animate() {
-        requestAnimationFrame(animate);
-        draw();
-        update();
-    }
-
-    canvas.addEventListener('mousemove', function(event) {
-        mouse.x = event.clientX;
-        mouse.y = event.clientY;
-    });
-
-    canvas.addEventListener('mouseleave', function() {
-        for (let i = 0; i < nodes.length; i++) {
-            const node = nodes[i];
-            node.vx = Math.random() * 2 - 1;
-            node.vy = Math.random() * 2 - 1;
         }
     });
-
-    animate();
-});
-    </script>
+</script>
 
 
 </body>
 </html>
+
