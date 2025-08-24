@@ -1,20 +1,18 @@
 <?php
-// This is the main HTML structure for the portfolio website
-// It includes the navigation, hero section, about section, skills section, projects section, certificates section, and contact form.
-
-// The code uses Tailwind CSS for styling and includes various animations and 3D effects using CSS and JavaScript libraries like Three.js and Typed.js. 
-// The website is designed to be responsive and visually appealing, with a focus on showcasing the developer's skills and projects.
 // Database configuration
-    $servername = "localhost";
-    $username = "root"; // Replace with your MySQL username
-    $password = ""; // Replace with your MySQL password
-    $dbname = "portfolio_db";
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+$servername = "localhost";
+$username = "root"; // Replace with your MySQL username
+$password = ""; // Replace with your MySQL password
+$dbname = "portfolio_db";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 // Create table if not exists
 $sql = "CREATE TABLE IF NOT EXISTS contacts (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -27,28 +25,29 @@ $sql = "CREATE TABLE IF NOT EXISTS contacts (
 if (!$conn->query($sql)) {
     die("Error creating table: " . $conn->error);
 }
+
+// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get and sanitize form data
+    // Sanitize input
     $name = $conn->real_escape_string($_POST['name']);
     $email = $conn->real_escape_string($_POST['email']);
     $subject = $conn->real_escape_string($_POST['subject']);
     $message = $conn->real_escape_string($_POST['message']);
 
-    // Insert data
+    // Insert query
     $sql = "INSERT INTO contacts (name, email, subject, message) 
             VALUES ('$name', '$email', '$subject', '$message')";
 
     if ($conn->query($sql) === TRUE) {
         echo "<script>alert('Message sent successfully!');</script>";
     } else {
-        echo "<script>alert('Error: " . $sql . "<br>" . $conn->error . "');</script>";
+        echo "<script>alert('Error: " . addslashes($conn->error) . "');</script>";
     }
 }
+
+// ✅ Only close the connection at the VERY END
 $conn->close();
-
-
 ?>
-
 
 
 
@@ -1584,4 +1583,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
     </script>
 </body>
+
 </html>
